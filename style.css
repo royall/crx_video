@@ -1,0 +1,15 @@
+#opts{
+    width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#opts li{
+    width: 50%;
+    line-height: 25px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+#opts li:hover{
+    background: #ddd;
+    cursor: pointer;
+}

@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "视频解析",
+  "version": "1.0.0",
+  "description": "免费看VIP视频",
+  "icons":
+  {
+    "16": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  },
+  "homepage_url": "http://www.5ifxw.com/vip/",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://v.qq.com/*"
+      ],
+      "css": [
+        "layer/theme/default/layer.css",
+        "style.css"
+      ],
+      "js": [
+        "jquery-3.3.1.min.js",
+        "layer/layer.js",
+        "myscript.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "img/icon.png",
+    "default_title": "视频解析插件",
+    "default_popup": "popup.html"
+  }
+}
