@@ -3,8 +3,7 @@
   "name": "视频解析",
   "version": "1.0.0",
   "description": "免费看VIP视频",
-  "icons":
-  {
+  "icons": {
     "16": "img/icon.png",
     "48": "img/icon.png",
     "128": "img/icon.png"
@@ -13,7 +12,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://v.qq.com/*"
+        "https://v.qq.com/*",
+        "https://www.baidu.com/*"
       ],
       "css": [
         "layer/theme/default/layer.css",
@@ -26,9 +26,17 @@
       ]
     }
   ],
-  "browser_action": {
+  "page_action": {
     "default_icon": "img/icon.png",
     "default_title": "视频解析插件",
     "default_popup": "popup.html"
+  },
+  "permissions": [
+    "declarativeContent"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
   }
 }

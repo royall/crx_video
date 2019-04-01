@@ -1,55 +1,82 @@
-(function ($) {
-  let flag = false;
-  // let url = 'https://www.1717yun.com/jx/ty.php?url=';
-  let url = 'http://jqaaa.com/jq3/?url=';
-  let $vip = $('.mark_vip_text');
-  if (!$vip.length) {
-    return
-  }
-  $vip.text('免费观看');
-  $vip.on('click', () => {
-    if (flag) {
-      layer.open({
-        btn: '关闭',
-        title: '切换接口',
-        content: opts
-      });
+class VideoParse {
 
-    } else {
-      flag = true;
-      $('.txp_video_container video').get(0).pause();
-      let $player = $('#tenvideo_player');
-      $player.html(`<iframe id="vip-iframe" width="100%" height="100" style="width: 100%;height: 100%;" frameborder="0" src="${url}${encodeURIComponent(window.location.href)}"></iframe>`);
-      $vip.text('切换接口');
+  flag = false;
+  lines = [
+    {"name": "万能接口1", "value": "http://www.ibb6.com/jx/?url="},
+    {"name": "万能接口2", "value": "http://jqaaa.com/jx.php?url="},
+    {"name": "万能接口3", "value": "http://jiexi.071811.cc/jx2.php?url="},
+    {"name": "万能接口4", "value": "http://jqaaa.com/jq3/?url="},
+    {"name": "万能接口5", "value": "http://yun.baiyug.cn/vip/index.php?url="},
+    {"name": "万能接口6", "value": "https://jiexi.071811.cc/jx2.php?url="},
+    {"name": "腾讯视频接口1", "value": "https://www.myxin.top/jx/api/?url="},
+    {"name": "爱奇艺超清接口1", "value": "https://vip.hackmg.com/jx/index.php?url="},
+    {"name": "爱奇艺超清接口2", "value": "http://api.baiyug.cn/vip/index.php?url="},
+    {"name": "爱奇艺超清接口3", "value": "http://jiexi.92fz.cn/player/vip.php?url="},
+    {"name": "芒果TV超清接口", "value": "http://jx.ovov.cc/?url="},
+    {"name": "芒果TV手机接口", "value": "http://jx.618ge.com/?url="},
+    {"name": "优酷超清接口", "value": "http://vip.jlsprh.com/?url="},
+    {"name": "搜狐视频接口", "value": "http://vip.jlsprh.com/index.php?url="},
+    {"name": "乐视视频接口", "value": "http://jx.598110.com/?url="}];
+
+  init() {
+    let $vip = $('.btn_vip_normal');
+    if (!$vip.length) {
+      return
     }
-  });
+    this.initEvents();
+    $vip.text('免费观看');
+    $vip.click();
+  }
 
-  $vip.click();
-  $('.tvip_layer').hide();
+  initEvents() {
+    let $vip = $('.btn_vip_normal');
 
-  let opts = `<ul id="opts">
-            <li value="http://www.ibb6.com/jx/?url=">万能接口1</li>
-			      <li value="http://jqaaa.com/jx.php?url=">万能接口2</li>	
-            <li value="http://jiexi.071811.cc/jx2.php?url=">万能接口3</li>
-            <li value="http://jqaaa.com/jq3/?url=">万能接口4</li>
-            <li value="http://yun.baiyug.cn/vip/index.php?url=">万能接口5</li>
-            <li value="https://jiexi.071811.cc/jx2.php?url=">万能接口6</li>
-			      <li value="https://www.myxin.top/jx/api/?url=">腾讯视频接口1</li>	
-			      <li value="https://vip.hackmg.com/jx/index.php?url=">爱奇艺超清接口1</li>
-            <li value="http://api.baiyug.cn/vip/index.php?url=">爱奇艺超清接口2</li>
-            <li value="http://jiexi.92fz.cn/player/vip.php?url=">爱奇艺超清接口3</li>
-            <li value="http://jx.ovov.cc/?url=">芒果TV超清接口</li>
-            <li value="http://jx.618ge.com/?url=">芒果TV手机接口</li>
-            <li value="http://vip.jlsprh.com/?url=">优酷超清接口</li>
-			      <li value="http://vip.jlsprh.com/index.php?url=">搜狐视频接口</li>
-            <li value="http://jx.598110.com/?url=">乐视视频接口</li>
-        </ul>`;
+    $vip.on('click', () => {
+      if (this.flag) {
+        this.showSwitchLine();
+      } else {
+        this.createPlayer();
+      }
+    });
 
-  $('body').on('click', '#opts li', function () {
+    $('body').on('click', '#opts li', this.switchLine);
+  }
+
+  createPlayer() {
+    this.flag = true;
+    let $vip = $('.btn_vip_normal');
+    try {
+      $('.txp_video_container video').get(0).pause();
+    } catch (e) {
+      console.log(e);
+    }
+
+    let $player = $('#tenvideo_player');
+    $player.html(`<iframe id="vip-player" width="100%" height="100" style="width: 100%;height: 100%;" frameborder="0" src="${this.lines[3]}${encodeURIComponent(window.location.href)}"></iframe>`);
+    $vip.text('切换接口');
+  }
+
+  showSwitchLine() {
+
+    let opts=this.lines.map((value)=>{
+      return `<li value="${value.value}">${value.name}</li>`
+    });
+    let content = `<ul id="opts">${opts.join('')}</ul>`;
+
+    layer.open({
+      btn: '关闭',
+      title: '切换接口',
+      content: content
+    });
+  }
+
+  switchLine() {
     let url = $(this).attr('value');
-    $('#vip-iframe').attr('src', `${url}${encodeURIComponent(window.location.href)}`);
+    $('#vip-player').attr('src', `${url}${encodeURIComponent(window.location.href)}`);
     layer.closeAll();
-  });
+  }
 
 
-})(window.jQuery);
+}
+
+new VideoParse().init();
